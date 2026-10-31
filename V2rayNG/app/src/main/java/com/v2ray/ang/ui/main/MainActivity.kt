@@ -101,7 +101,7 @@ class MainActivity : HelperBaseComponentActivity() {
     @Composable
     override fun ScreenContent() {
         BackHandler { moveTaskToBack(false) }
-        MainScreen(
+        JokerEntryScreen(
             mainViewModel = mainViewModel,
             onAction = { action ->
                 when (action) {
