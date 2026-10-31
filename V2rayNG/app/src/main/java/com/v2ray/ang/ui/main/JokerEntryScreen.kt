@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -18,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -137,24 +135,7 @@ fun JokerEntryScreen(
                     }), color = accent, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
-            Box(Modifier.fillMaxWidth().height(238.dp), contentAlignment = Alignment.Center) {
-                Box(Modifier.size(width = 154.dp, height = 198.dp).rotate(-16f)
-                    .background(Color(0xFF352344), RoundedCornerShape(24.dp))
-                    .border(1.dp, JokerLilac.copy(alpha = .35f), RoundedCornerShape(24.dp)))
-                Box(Modifier.size(width = 154.dp, height = 198.dp).rotate(15f)
-                    .background(Color(0xFF203D36), RoundedCornerShape(24.dp))
-                    .border(1.dp, JokerMint.copy(alpha = .3f), RoundedCornerShape(24.dp)))
-                Box(Modifier.size(218.dp).background(
-                    Brush.radialGradient(listOf(accent.copy(alpha = .24f), Color.Transparent)), CircleShape))
-                Surface(shape = CircleShape, color = Color(0xFF21182F),
-                    border = BorderStroke(2.dp, accent.copy(alpha = .8f)),
-                    shadowElevation = 12.dp, modifier = Modifier.size(182.dp)) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(painterResource(R.drawable.joker_emblem), contentDescription = null,
-                            tint = Color.Unspecified, modifier = Modifier.size(124.dp))
-                    }
-                }
-            }
+            JokerPortrait(running = running, accent = accent)
             Button(
                 onClick = { onAction(MainAction.ToggleService) },
                 enabled = hasProfile || running,
