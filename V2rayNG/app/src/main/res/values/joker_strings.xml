@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">Your move. Your freedom.</string>
+    <string name="joker_running">VPN is on</string>
+    <string name="joker_ready">Ready to connect</string>
+    <string name="joker_disconnect">Disconnect</string>
+    <string name="joker_connect">Connect</string>
+</resources>

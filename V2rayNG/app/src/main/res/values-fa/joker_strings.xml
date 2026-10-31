@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">انتخاب تو، آزادی تو.</string>
+    <string name="joker_running">وی‌پی‌ان روشن است</string>
+    <string name="joker_ready">آماده اتصال</string>
+    <string name="joker_disconnect">قطع اتصال</string>
+    <string name="joker_connect">اتصال</string>
+</resources>

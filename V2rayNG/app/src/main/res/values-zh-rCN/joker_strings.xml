@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">你的选择，你的自由。</string>
+    <string name="joker_running">VPN 已开启</string>
+    <string name="joker_ready">准备连接</string>
+    <string name="joker_disconnect">断开连接</string>
+    <string name="joker_connect">连接</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">Lựa chọn của bạn. Tự do của bạn.</string>
+    <string name="joker_running">VPN đang bật</string>
+    <string name="joker_ready">Sẵn sàng kết nối</string>
+    <string name="joker_disconnect">Ngắt kết nối</string>
+    <string name="joker_connect">Kết nối</string>
+</resources>

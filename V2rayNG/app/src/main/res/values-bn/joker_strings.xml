@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">আপনার সিদ্ধান্ত। আপনার স্বাধীনতা।</string>
+    <string name="joker_running">VPN চালু আছে</string>
+    <string name="joker_ready">সংযোগের জন্য প্রস্তুত</string>
+    <string name="joker_disconnect">সংযোগ বিচ্ছিন্ন করুন</string>
+    <string name="joker_connect">সংযোগ করুন</string>
+</resources>

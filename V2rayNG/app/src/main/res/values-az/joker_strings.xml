@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_tagline">Sənin seçimin. Sənin azadlığın.</string>
+    <string name="joker_running">VPN aktivdir</string>
+    <string name="joker_ready">Qoşulmağa hazırdır</string>
+    <string name="joker_disconnect">Bağlantını kəs</string>
+    <string name="joker_connect">Qoşul</string>
+</resources>
