@@ -97,8 +97,11 @@ jobs:
           temp = Path(os.environ['RUNNER_TEMP'])
           expected = (temp / 'joker-signing/certificate.sha256').read_text().strip()
           text = (temp / 'joker-signer.txt').read_text()
-          actual = re.findall(r'Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]+)', text)
-          assert len(actual) == 1 and actual[0].lower() == expected, 'APK certificate mismatch'
+          # Signer labels vary by Build Tools and signature scheme; check every certificate.
+          actual = [line.split('certificate SHA-256 digest:', 1)[1].strip().lower()
+                    for line in text.splitlines() if 'certificate SHA-256 digest:' in line]
+          assert actual and all(value == expected for value in actual), 'APK certificate mismatch: ' + repr(actual)
+          print('Verified permanent signing certificate SHA-256: ' + expected)
           PY
           "$TOOLS/aapt2" dump badging signed-apk/JOKER-VPN-arm64-v8a.apk > "$RUNNER_TEMP/joker-badging.txt"
           grep -q "package: name='com.joker.vpn.app'" "$RUNNER_TEMP/joker-badging.txt"
