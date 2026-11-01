@@ -46,14 +46,48 @@ jobs:
             "https://github.com/2dust/AndroidLibXrayLite/releases/download/$TAG/libv2ray.aar" \
             --output V2rayNG/app/libs/libv2ray.aar
           test -s V2rayNG/app/libs/libv2ray.aar
+      - name: Prepare separate JOKER preview package
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          app = Path("V2rayNG/app")
+          gradle = app / "build.gradle.kts"
+          source = gradle.read_text()
+          old_id = 'applicationId = "com.joker.vpn"'
+          assert source.count(old_id) == 1, "Unexpected applicationId; refusing to patch"
+          gradle.write_text(source.replace(old_id, 'applicationId = "com.joker.vpn.preview"', 1))
+          # CI preview has its own app data and cannot replace the working installed app.
+          for source_dir in (app / "src/main/res").glob("values*"):
+              strings = source_dir / "strings.xml"
+              if strings.exists():
+                  text = strings.read_text()
+                  text = text.replace('name="app_name" translatable="false">JOKER VPN<',
+                                      'name="app_name" translatable="false">JOKER VPN Preview<')
+                  strings.write_text(text)
+          shortcuts = app / "src/main/res/xml/shortcuts.xml"
+          text = shortcuts.read_text()
+          assert 'android:targetPackage="com.v2ray.ang"' in text
+          shortcuts.write_text(text.replace('android:targetPackage="com.v2ray.ang"',
+                                           'android:targetPackage="com.joker.vpn.preview"'))
+          PY
       - name: Build JOKER debug APK
         working-directory: V2rayNG
         run: |
           chmod +x gradlew
           ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreDebug --no-daemon
-      - name: Publish installable debug APK
+      - name: Verify preview package and prepare phone APK
+        run: |
+          mkdir -p preview-apk
+          APK=$(find V2rayNG/app/build/outputs/apk/playstore/debug -name '*arm64-v8a.apk' -print -quit)
+          test -n "$APK"
+          "$ANDROID_HOME/build-tools/37.0.0/aapt2" dump badging "$APK" > preview-badging.txt
+          grep -q "package: name='com.joker.vpn.preview'" preview-badging.txt
+          grep -q "application-label:'JOKER VPN Preview'" preview-badging.txt
+          "$ANDROID_HOME/build-tools/37.0.0/apksigner" verify "$APK"
+          cp "$APK" preview-apk/JOKER-VPN-Preview-arm64-v8a.apk
+      - name: Publish installable preview APK
         uses: actions/upload-artifact@v7
         with:
-          name: JOKER-VPN-debug-APK
-          path: V2rayNG/app/build/outputs/apk/playstore/debug/*.apk
+          name: JOKER-VPN-Preview-arm64-v8a
+          path: preview-apk/JOKER-VPN-Preview-arm64-v8a.apk
           if-no-files-found: error
