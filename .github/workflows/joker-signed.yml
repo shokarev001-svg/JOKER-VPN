@@ -1,0 +1,117 @@
+name: Build JOKER VPN (permanent signature)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: joker-permanent-signing
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Require permanent signing key
+        env:
+          JOKER_SIGNING_JSON: ${{ secrets.JOKER_SIGNING_JSON }}
+        run: python3 .github/signing/restore.py
+      - uses: actions/setup-java@v6.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v4
+        with:
+          cmdline-tools-version: '14742923'
+          packages: 'platforms;android-37.0 build-tools;37.0.0 platform-tools'
+      - name: Android SDK and NDK
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager 'platforms;android-37.0' 'build-tools;37.0.0' 'ndk;30.0.16248370'
+          echo "NDK_HOME=$ANDROID_HOME/ndk/30.0.16248370" >> "$GITHUB_ENV"
+      - name: Build native TUN helper
+        run: |
+          bash compile-hevtun.sh
+          mkdir -p V2rayNG/app/libs
+          cp -R libs/. V2rayNG/app/libs/
+      - name: Fetch matching Xray library
+        run: |
+          TAG=$(git -C AndroidLibXrayLite describe --tags --abbrev=0)
+          curl --fail --location --retry 3 \
+            "https://github.com/2dust/AndroidLibXrayLite/releases/download/$TAG/libv2ray.aar" \
+            --output V2rayNG/app/libs/libv2ray.aar
+          test -s V2rayNG/app/libs/libv2ray.aar
+      - name: Prepare permanent application identity and version
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          p = Path('V2rayNG/app/build.gradle.kts')
+          text = p.read_text()
+          old = 'applicationId = "com.joker.vpn"'
+          assert text.count(old) == 1
+          # One permanent app alongside both legacy debug installs: no user data is removed.
+          text = text.replace(old, 'applicationId = "com.joker.vpn.app"', 1)
+          version = 100000 + int(os.environ['GITHUB_RUN_NUMBER'])
+          assert 100000 < version < 1000000000
+          text, count = re.subn(r'versionCode = \d+', f'versionCode = {version}', text, count=1)
+          assert count == 1
+          p.write_text(text)
+          shortcuts = Path('V2rayNG/app/src/main/res/xml/shortcuts.xml')
+          text = shortcuts.read_text()
+          assert 'android:targetPackage="com.v2ray.ang"' in text
+          shortcuts.write_text(text.replace('android:targetPackage="com.v2ray.ang"',
+                                            'android:targetPackage="com.joker.vpn.app"'))
+          PY
+      - name: Test and build release APK
+        working-directory: V2rayNG
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreRelease --no-daemon
+      - name: Sign and verify permanent APK
+        run: |
+          set -euo pipefail
+          mkdir -p signed-apk
+          APK=$(find V2rayNG/app/build/outputs/apk/playstore/release -name '*arm64-v8a.apk' -print -quit)
+          test -n "$APK"
+          TOOLS="$ANDROID_HOME/build-tools/37.0.0"
+          "$TOOLS/apksigner" sign --ks "$RUNNER_TEMP/joker-signing/key.p12" --ks-key-alias joker \
+            --ks-pass "file:$RUNNER_TEMP/joker-signing/password" \
+            --key-pass "file:$RUNNER_TEMP/joker-signing/password" \
+            --out signed-apk/JOKER-VPN-arm64-v8a.apk "$APK"
+          "$TOOLS/apksigner" verify --verbose --print-certs signed-apk/JOKER-VPN-arm64-v8a.apk > "$RUNNER_TEMP/joker-signer.txt"
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          temp = Path(os.environ['RUNNER_TEMP'])
+          expected = (temp / 'joker-signing/certificate.sha256').read_text().strip()
+          text = (temp / 'joker-signer.txt').read_text()
+          actual = re.findall(r'Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]+)', text)
+          assert len(actual) == 1 and actual[0].lower() == expected, 'APK certificate mismatch'
+          PY
+          "$TOOLS/aapt2" dump badging signed-apk/JOKER-VPN-arm64-v8a.apk > "$RUNNER_TEMP/joker-badging.txt"
+          grep -q "package: name='com.joker.vpn.app'" "$RUNNER_TEMP/joker-badging.txt"
+          if grep -q '^application-debuggable' "$RUNNER_TEMP/joker-badging.txt"; then
+            echo 'Refusing debuggable permanent APK' >&2
+            exit 1
+          fi
+          cp "$RUNNER_TEMP/joker-signing/certificate.sha256" signed-apk/signing-certificate.sha256
+          sha256sum signed-apk/JOKER-VPN-arm64-v8a.apk > signed-apk/APK.sha256
+      - name: Upload signed phone APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: JOKER-VPN-permanent-arm64-v8a
+          path: signed-apk/
+          if-no-files-found: error
+      - name: Remove signing material from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/joker-signing/key.p12" "$RUNNER_TEMP/joker-signing/password" "$RUNNER_TEMP/joker-signing/certificate.sha256"
