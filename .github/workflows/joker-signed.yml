@@ -83,9 +83,11 @@ jobs:
           APK=$(find V2rayNG/app/build/outputs/apk/playstore/release -name '*arm64-v8a.apk' -print -quit)
           test -n "$APK"
           TOOLS="$ANDROID_HOME/build-tools/37.0.0"
+          # apksigner consumes password files sequentially; use a separate file for the key.
+          cp "$RUNNER_TEMP/joker-signing/password" "$RUNNER_TEMP/joker-signing/key-password"
           "$TOOLS/apksigner" sign --ks "$RUNNER_TEMP/joker-signing/key.p12" --ks-key-alias joker \
             --ks-pass "file:$RUNNER_TEMP/joker-signing/password" \
-            --key-pass "file:$RUNNER_TEMP/joker-signing/password" \
+            --key-pass "file:$RUNNER_TEMP/joker-signing/key-password" \
             --out signed-apk/JOKER-VPN-arm64-v8a.apk "$APK"
           "$TOOLS/apksigner" verify --verbose --print-certs signed-apk/JOKER-VPN-arm64-v8a.apk > "$RUNNER_TEMP/joker-signer.txt"
           python3 - <<'PY'
@@ -114,4 +116,4 @@ jobs:
           if-no-files-found: error
       - name: Remove signing material from runner
         if: always()
-        run: rm -f "$RUNNER_TEMP/joker-signing/key.p12" "$RUNNER_TEMP/joker-signing/password" "$RUNNER_TEMP/joker-signing/certificate.sha256"
+        run: rm -f "$RUNNER_TEMP/joker-signing/key.p12" "$RUNNER_TEMP/joker-signing/password" "$RUNNER_TEMP/joker-signing/key-password" "$RUNNER_TEMP/joker-signing/certificate.sha256"
