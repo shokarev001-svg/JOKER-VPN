@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">সাবস্ক্রিপশন</string>
+    <string name="joker_membership_loading">সাবস্ক্রিপশন পরীক্ষা করা হচ্ছে…</string>
+    <string name="joker_membership_active">সাবস্ক্রিপশন সক্রিয়</string>
+    <string name="joker_membership_expired">সাবস্ক্রিপশনের মেয়াদ শেষ</string>
+    <string name="joker_membership_inactive">সক্রিয় সাবস্ক্রিপশন নেই</string>
+    <string name="joker_membership_days">বাকি দিন: %1$d</string>
+    <string name="joker_membership_unavailable">সক্রিয়করণ পরিষেবা এখনও সংযুক্ত নয়।</string>
+    <string name="joker_membership_invalid">সঠিক সক্রিয়করণ কী লিখুন।</string>
+    <string name="joker_membership_used">এই কী অন্য ইনস্টলেশনে ব্যবহার হয়েছে।</string>
+    <string name="joker_membership_key_expired">এই সক্রিয়করণ কীটির মেয়াদ শেষ।</string>
+    <string name="joker_membership_network">সাবস্ক্রিপশন পরীক্ষা করা যায়নি। সংযোগ ফিরলে একই কী দিয়ে আবার চেষ্টা করুন।</string>
+    <string name="joker_membership_key">সক্রিয়করণ কী</string>
+    <string name="joker_membership_redeem">সক্রিয় করুন</string>
+    <string name="joker_membership_refresh">অবস্থা হালনাগাদ করুন</string>
+    <string name="joker_membership_hint">পরীক্ষার সময় সার্ভার বাকি দিন নির্ধারণ করে। কী একবার ব্যবহারযোগ্য; পুনরায় অনুরোধে মেয়াদ আবার বাড়ে না। প্রবেশাধিকার রাখতে অ্যাপের তথ্য সংরক্ষণ করুন।</string>
+</resources>

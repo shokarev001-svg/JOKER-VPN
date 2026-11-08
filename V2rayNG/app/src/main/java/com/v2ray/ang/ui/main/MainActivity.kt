@@ -105,6 +105,7 @@ class MainActivity : HelperBaseComponentActivity() {
             mainViewModel = mainViewModel,
             onAction = { action ->
                 when (action) {
+                    MainAction.OpenMembership -> startActivity(Intent(this, com.v2ray.ang.ui.membership.MembershipActivity::class.java))
                     MainAction.ToggleService -> handleFabAction()
                     MainAction.TestCurrentServer -> handleLayoutTestClick()
                     MainAction.ImportQRcode -> importQRcode()

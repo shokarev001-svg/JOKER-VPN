@@ -303,6 +303,7 @@ class MainViewModel(
             }
 
             MainAction.ToggleService,
+            MainAction.OpenMembership,
             MainAction.TestCurrentServer,
             MainAction.ImportQRcode,
             MainAction.ImportClipboard,

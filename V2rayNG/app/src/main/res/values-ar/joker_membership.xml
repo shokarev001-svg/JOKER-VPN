@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">الاشتراك</string>
+    <string name="joker_membership_loading">جارٍ التحقق من الاشتراك…</string>
+    <string name="joker_membership_active">الاشتراك نشط</string>
+    <string name="joker_membership_expired">انتهى الاشتراك</string>
+    <string name="joker_membership_inactive">لا يوجد اشتراك نشط</string>
+    <string name="joker_membership_days">الأيام المتبقية: %1$d</string>
+    <string name="joker_membership_unavailable">خدمة التفعيل غير متصلة بعد.</string>
+    <string name="joker_membership_invalid">أدخل مفتاح تفعيل صالحًا.</string>
+    <string name="joker_membership_used">استُخدم هذا المفتاح في تثبيت آخر.</string>
+    <string name="joker_membership_key_expired">انتهت صلاحية مفتاح التفعيل.</string>
+    <string name="joker_membership_network">تعذر التحقق من الاشتراك. أعد المحاولة بالمفتاح نفسه بعد استعادة الاتصال.</string>
+    <string name="joker_membership_key">مفتاح التفعيل</string>
+    <string name="joker_membership_redeem">تفعيل</string>
+    <string name="joker_membership_refresh">تحديث الحالة</string>
+    <string name="joker_membership_hint">يحدد الخادم الأيام المتبقية وقت التحقق. يُستخدم المفتاح مرة واحدة؛ تكرار الطلب لا يمدد المدة مجددًا. احتفظ ببيانات التطبيق للحفاظ على الوصول.</string>
+</resources>

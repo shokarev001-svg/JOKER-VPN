@@ -73,6 +73,8 @@ jobs:
           PY
       - name: Test and build release APK
         working-directory: V2rayNG
+        env:
+          JOKER_ACTIVATION_URL: ${{ vars.JOKER_ACTIVATION_URL }}
         run: |
           chmod +x gradlew
           ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreRelease --no-daemon

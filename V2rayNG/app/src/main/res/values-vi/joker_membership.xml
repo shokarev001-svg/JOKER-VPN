@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">Gói đăng ký</string>
+    <string name="joker_membership_loading">Đang kiểm tra gói…</string>
+    <string name="joker_membership_active">Gói đang hoạt động</string>
+    <string name="joker_membership_expired">Gói đã hết hạn</string>
+    <string name="joker_membership_inactive">Chưa có gói hoạt động</string>
+    <string name="joker_membership_days">Số ngày còn lại: %1$d</string>
+    <string name="joker_membership_unavailable">Dịch vụ kích hoạt chưa được kết nối.</string>
+    <string name="joker_membership_invalid">Nhập mã kích hoạt hợp lệ.</string>
+    <string name="joker_membership_used">Mã này đã được dùng trên bản cài đặt khác.</string>
+    <string name="joker_membership_key_expired">Mã kích hoạt này đã hết hạn.</string>
+    <string name="joker_membership_network">Không thể kiểm tra gói. Hãy thử lại cùng mã sau khi kết nối lại.</string>
+    <string name="joker_membership_key">Mã kích hoạt</string>
+    <string name="joker_membership_redeem">Kích hoạt</string>
+    <string name="joker_membership_refresh">Cập nhật trạng thái</string>
+    <string name="joker_membership_hint">Máy chủ xác định số ngày còn lại tại thời điểm kiểm tra. Mã chỉ dùng một lần; yêu cầu lặp lại không gia hạn thêm. Giữ dữ liệu ứng dụng để duy trì quyền truy cập.</string>
+</resources>

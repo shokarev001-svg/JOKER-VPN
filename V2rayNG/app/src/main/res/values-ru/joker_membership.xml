@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">Подписка</string>
+    <string name="joker_membership_loading">Проверяем подписку…</string>
+    <string name="joker_membership_active">Подписка активна</string>
+    <string name="joker_membership_expired">Подписка истекла</string>
+    <string name="joker_membership_inactive">Нет активной подписки</string>
+    <string name="joker_membership_days">Осталось дней: %1$d</string>
+    <string name="joker_membership_unavailable">Сервис активации пока не подключён.</string>
+    <string name="joker_membership_invalid">Введите корректный ключ активации.</string>
+    <string name="joker_membership_used">Этот ключ использован в другой установке приложения.</string>
+    <string name="joker_membership_key_expired">Срок действия ключа активации истёк.</string>
+    <string name="joker_membership_network">Не удалось проверить подписку. После восстановления связи повторите запрос с тем же ключом.</string>
+    <string name="joker_membership_key">Ключ активации</string>
+    <string name="joker_membership_redeem">Активировать</string>
+    <string name="joker_membership_refresh">Обновить статус</string>
+    <string name="joker_membership_hint">Оставшиеся дни определяет сервер на момент проверки. Ключ используется один раз; повторный запрос не продлевает срок повторно. Сохраняйте данные приложения, чтобы не потерять доступ.</string>
+</resources>

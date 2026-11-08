@@ -1,0 +1,23 @@
+[Unit]
+Description=JOKER subscription ledger
+After=network.target
+
+[Service]
+User=joker-activation
+Group=joker-activation
+StateDirectory=joker-activation
+StateDirectoryMode=0700
+WorkingDirectory=/opt/joker-activation
+ExecStart=/usr/bin/python3 /opt/joker-activation/server.py serve
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/joker-activation
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target
