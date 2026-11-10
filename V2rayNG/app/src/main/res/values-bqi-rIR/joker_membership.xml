@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">اشتراک</string>
+    <string name="joker_membership_loading">دارِه اشتراک بررسی اِبو…</string>
+    <string name="joker_membership_active">اشتراک فعاله</string>
+    <string name="joker_membership_expired">مدت اشتراک تموم اِبو</string>
+    <string name="joker_membership_inactive">اشتراک فعال نی</string>
+    <string name="joker_membership_days">روزهای مونده: %1$d</string>
+    <string name="joker_membership_unavailable">سرویس فعال‌سازی هنوز وصل نی.</string>
+    <string name="joker_membership_invalid">کلید فعال‌سازی درست وارد کنین.</string>
+    <string name="joker_membership_used">ای کلید تو نصب دیگه استفاده اِبو.</string>
+    <string name="joker_membership_key_expired">مدت ای کلید فعال‌سازی تموم اِبو.</string>
+    <string name="joker_membership_network">اشتراک بررسی نِبو. بعد وصل شدن، وا همون کلید دوباره تلاش کنین.</string>
+    <string name="joker_membership_key">کلید فعال‌سازی</string>
+    <string name="joker_membership_redeem">فعال کردن</string>
+    <string name="joker_membership_refresh">تازه کردن وضعیت</string>
+    <string name="joker_membership_hint">سرور موقع بررسی روزهای مونده ره مشخص اِکنه. کلید یه بار استفاده اِبو؛ درخواست دوباره مدت ره اضافه نِکنه. واسه حفظ دسترسی، داده‌های برنامه ره نگه دارین.</string>
+</resources>

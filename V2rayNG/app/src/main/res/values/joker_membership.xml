@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">Subscription</string>
+    <string name="joker_membership_loading">Checking subscription…</string>
+    <string name="joker_membership_active">Subscription active</string>
+    <string name="joker_membership_expired">Subscription expired</string>
+    <string name="joker_membership_inactive">No active subscription</string>
+    <string name="joker_membership_days">Days remaining: %1$d</string>
+    <string name="joker_membership_unavailable">Activation service is not connected yet.</string>
+    <string name="joker_membership_invalid">Enter a valid activation key.</string>
+    <string name="joker_membership_used">This key was used on another installation.</string>
+    <string name="joker_membership_key_expired">This activation key has expired.</string>
+    <string name="joker_membership_network">Unable to check the subscription. Retry with the same key after reconnecting.</string>
+    <string name="joker_membership_key">Activation key</string>
+    <string name="joker_membership_redeem">Activate</string>
+    <string name="joker_membership_refresh">Refresh status</string>
+    <string name="joker_membership_hint">The server determines the remaining days at the time of checking. A key can be used once; repeat requests do not extend it again. Keep your app data to retain access.</string>
+</resources>

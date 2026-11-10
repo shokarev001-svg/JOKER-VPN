@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">Abunəlik</string>
+    <string name="joker_membership_loading">Abunəlik yoxlanılır…</string>
+    <string name="joker_membership_active">Abunəlik aktivdir</string>
+    <string name="joker_membership_expired">Abunəlik bitib</string>
+    <string name="joker_membership_inactive">Aktiv abunəlik yoxdur</string>
+    <string name="joker_membership_days">Qalan günlər: %1$d</string>
+    <string name="joker_membership_unavailable">Aktivləşdirmə xidməti hələ qoşulmayıb.</string>
+    <string name="joker_membership_invalid">Düzgün aktivləşdirmə açarı daxil edin.</string>
+    <string name="joker_membership_used">Bu açar başqa quraşdırmada istifadə olunub.</string>
+    <string name="joker_membership_key_expired">Bu aktivləşdirmə açarının müddəti bitib.</string>
+    <string name="joker_membership_network">Abunəliyi yoxlamaq mümkün olmadı. Bağlantı bərpa olduqdan sonra eyni açarla yenidən cəhd edin.</string>
+    <string name="joker_membership_key">Aktivləşdirmə açarı</string>
+    <string name="joker_membership_redeem">Aktivləşdir</string>
+    <string name="joker_membership_refresh">Statusu yenilə</string>
+    <string name="joker_membership_hint">Qalan günləri yoxlama zamanı server müəyyən edir. Açar bir dəfə istifadə olunur; təkrar sorğu müddəti yenidən uzatmır. Girişi saxlamaq üçün tətbiq məlumatlarını qoruyun.</string>
+</resources>

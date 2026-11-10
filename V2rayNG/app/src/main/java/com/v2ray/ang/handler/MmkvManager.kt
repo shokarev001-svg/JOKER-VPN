@@ -36,6 +36,26 @@ internal class ProfileStorageException(message: String) : IllegalStateException(
 
 object MmkvManager {
 
+    /** Called on IO; one persisted credential makes lost-response redemption retries safe. */
+    fun getOrCreateMembershipToken(): String = synchronized(settingsStorage) {
+        settingsStorage.lock()
+        try {
+            val key = "JOKER_MEMBERSHIP_TOKEN_V1"
+            val stored = settingsStorage.decodeString(key)
+            if (stored != null) {
+                check(Regex("[0-9a-f]{64}").matches(stored))
+                stored
+            } else {
+                val bytes = ByteArray(32).also { java.security.SecureRandom().nextBytes(it) }
+                val token = bytes.joinToString("") { "%02x".format(it.toInt() and 255) }
+                check(settingsStorage.encode(key, token))
+                token
+            }
+        } finally {
+            settingsStorage.unlock()
+        }
+    }
+
     //region private
 
     private const val ID_MAIN = "MAIN"

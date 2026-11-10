@@ -62,6 +62,9 @@
         </service>
 
         <activity
+            android:name=".ui.membership.MembershipActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">

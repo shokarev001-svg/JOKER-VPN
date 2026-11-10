@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">訂閱</string>
+    <string name="joker_membership_loading">正在檢查訂閱…</string>
+    <string name="joker_membership_active">訂閱有效</string>
+    <string name="joker_membership_expired">訂閱已過期</string>
+    <string name="joker_membership_inactive">無有效訂閱</string>
+    <string name="joker_membership_days">剩餘天數：%1$d</string>
+    <string name="joker_membership_unavailable">啟用服務尚未連線。</string>
+    <string name="joker_membership_invalid">請輸入有效的啟用碼。</string>
+    <string name="joker_membership_used">此啟用碼已在其他安裝中使用。</string>
+    <string name="joker_membership_key_expired">此啟用碼已過期。</string>
+    <string name="joker_membership_network">無法檢查訂閱。恢復連線後請使用相同啟用碼重試。</string>
+    <string name="joker_membership_key">啟用碼</string>
+    <string name="joker_membership_redeem">啟用</string>
+    <string name="joker_membership_refresh">重新整理狀態</string>
+    <string name="joker_membership_hint">剩餘天數由伺服器在檢查時決定。啟用碼只能使用一次；重複請求不會再次延長訂閱。請保留應用程式資料以維持存取權。</string>
+</resources>

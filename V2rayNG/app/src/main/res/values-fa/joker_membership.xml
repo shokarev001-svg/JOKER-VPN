@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="joker_membership_title">اشتراک</string>
+    <string name="joker_membership_loading">در حال بررسی اشتراک…</string>
+    <string name="joker_membership_active">اشتراک فعال است</string>
+    <string name="joker_membership_expired">اشتراک منقضی شده</string>
+    <string name="joker_membership_inactive">اشتراک فعالی وجود ندارد</string>
+    <string name="joker_membership_days">روزهای باقی‌مانده: %1$d</string>
+    <string name="joker_membership_unavailable">سرویس فعال‌سازی هنوز متصل نیست.</string>
+    <string name="joker_membership_invalid">کلید فعال‌سازی معتبر وارد کنید.</string>
+    <string name="joker_membership_used">این کلید در نصب دیگری استفاده شده است.</string>
+    <string name="joker_membership_key_expired">این کلید فعال‌سازی منقضی شده است.</string>
+    <string name="joker_membership_network">بررسی اشتراک ممکن نیست. پس از اتصال دوباره، با همان کلید تلاش کنید.</string>
+    <string name="joker_membership_key">کلید فعال‌سازی</string>
+    <string name="joker_membership_redeem">فعال‌سازی</string>
+    <string name="joker_membership_refresh">تازه‌سازی وضعیت</string>
+    <string name="joker_membership_hint">سرور روزهای باقی‌مانده را هنگام بررسی تعیین می‌کند. کلید یک‌بار مصرف است؛ تکرار درخواست مدت را دوباره افزایش نمی‌دهد. برای حفظ دسترسی، داده‌های برنامه را نگه دارید.</string>
+</resources>

@@ -16,6 +16,10 @@ android {
         versionCode = 754
         versionName = "2.3.14"
 
+        val activationUrl = providers.environmentVariable("JOKER_ACTIVATION_URL").orElse("").get()
+        require(activationUrl.isEmpty() || activationUrl.matches(Regex("https://[a-zA-Z0-9.-]+(:[0-9]{1,5})?")))
+        buildConfigField("String", "JOKER_ACTIVATION_URL", "\"$activationUrl\"")
+
         val abiFilterList = (properties["ABI_FILTERS"] as? String)?.split(';')
         splits {
             abi {

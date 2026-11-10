@@ -2,6 +2,9 @@ name: Build JOKER VPN (permanent signature)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [feature/joker-activation]
+    paths: [.github/workflows/joker-signed.yml]
 
 permissions:
   contents: read
@@ -73,9 +76,13 @@ jobs:
           PY
       - name: Test and build release APK
         working-directory: V2rayNG
+        env:
+          JOKER_ACTIVATION_URL: https://195.133.20.123:8444
         run: |
+          python3 -m unittest discover -s ../activation -v
           chmod +x gradlew
-          ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreRelease --no-daemon
+          ./gradlew :app:testPlaystoreDebugUnitTest --tests '*MembershipControllerTest' --no-daemon
+          ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreDebug :app:assemblePlaystoreRelease --no-daemon
       - name: Sign and verify permanent APK
         run: |
           set -euo pipefail
