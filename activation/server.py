@@ -8,6 +8,7 @@ import re
 import secrets
 import sqlite3
 import time
+import uuid
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -31,7 +32,14 @@ class Ledger:
                 CREATE TABLE IF NOT EXISTS vouchers (
                     key_hash TEXT PRIMARY KEY, days INTEGER NOT NULL,
                     redeem_before INTEGER NOT NULL, owner TEXT, redeemed INTEGER);
+                CREATE TABLE IF NOT EXISTS vpn_credentials (
+                    token_hash TEXT PRIMARY KEY REFERENCES members(token_hash),
+                    uuid TEXT NOT NULL UNIQUE);
             ''')
+            # Additive migration: preserve membership dates and redeemed vouchers.
+            db.execute('BEGIN IMMEDIATE')
+            for (owner,) in db.execute('SELECT token_hash FROM members WHERE token_hash NOT IN (SELECT token_hash FROM vpn_credentials)').fetchall():
+                db.execute('INSERT INTO vpn_credentials VALUES (?, ?)', (owner, str(uuid.uuid4())))
 
     @contextmanager
     def connect(self):
@@ -83,6 +91,8 @@ class Ledger:
                                (owner, expires))
                     db.execute('UPDATE vouchers SET owner=?, redeemed=? WHERE key_hash=?',
                                (owner, now, self.digest(key)))
+                    db.execute('INSERT OR IGNORE INTO vpn_credentials VALUES (?, ?)',
+                               (owner, str(uuid.uuid4())))
                 # Retrying after a lost response never grants the days twice.
             return {'server_time': now, 'expires_at': expires,
                     'remaining_days': math.ceil(max(0, expires - now) / DAY),
