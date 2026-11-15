@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
   push:
     branches: [feature/joker-activation]
-    paths: [.github/workflows/joker-signed.yml]
+    paths: [.github/workflows/joker-signed.yml, V2rayNG/**, activation/**]
 
 permissions:
   contents: read
 
 concurrency:
   group: joker-permanent-signing
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:

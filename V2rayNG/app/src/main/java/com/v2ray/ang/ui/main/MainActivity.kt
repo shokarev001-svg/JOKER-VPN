@@ -82,6 +82,11 @@ class MainActivity : HelperBaseComponentActivity() {
             if (restartService || selectedProfileSaved) LauncherManager.restartService(this)
         }
 
+    private val membershipActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            mainViewModel.onAction(MainAction.RefreshGroups)
+        }
+
     private val settingsActivityLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val restartService = SettingsChangeManager.consumeRestartService()
@@ -105,7 +110,7 @@ class MainActivity : HelperBaseComponentActivity() {
             mainViewModel = mainViewModel,
             onAction = { action ->
                 when (action) {
-                    MainAction.OpenMembership -> startActivity(Intent(this, com.v2ray.ang.ui.membership.MembershipActivity::class.java))
+                    MainAction.OpenMembership -> membershipActivityLauncher.launch(Intent(this, com.v2ray.ang.ui.membership.MembershipActivity::class.java))
                     MainAction.ToggleService -> handleFabAction()
                     MainAction.TestCurrentServer -> handleLayoutTestClick()
                     MainAction.ImportQRcode -> importQRcode()
