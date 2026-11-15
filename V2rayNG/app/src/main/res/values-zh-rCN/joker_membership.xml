@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">激活</string>
     <string name="joker_membership_refresh">刷新状态</string>
     <string name="joker_membership_hint">剩余天数由服务器在检查时确定。激活码只能使用一次；重复请求不会再次延长订阅。请保留应用数据以保持访问权限。</string>
+    <string name="joker_membership_profile_name">JOKER — 订阅</string>
+    <string name="joker_membership_profile_add">添加 VPN 配置</string>
+    <string name="joker_membership_profile_saved">已保存配置“%1$s”。请在配置列表中选择它，然后重新连接 VPN。</string>
+    <string name="joker_membership_profile_unavailable">VPN 配置尚未就绪，请稍后重试。</string>
+    <string name="joker_membership_profile_inactive">需要有效订阅才能添加 VPN 配置。</string>
+    <string name="joker_membership_profile_storage">无法保存配置。请释放存储空间后重试。</string>
 </resources>

@@ -9,6 +9,7 @@ class MembershipControllerTest {
     private class Source(override val configured: Boolean = true) : MembershipSource {
         var calls = 0
         var receivedKey: String? = null
+        var receivedName: String? = null
         var result = Membership("inactive", 0)
         var failure: MembershipError? = null
         var gate: CompletableDeferred<Unit>? = null
@@ -18,6 +19,10 @@ class MembershipControllerTest {
             gate?.await()
             failure?.let { throw MembershipException(it) }
             return result
+        }
+        override suspend fun prepareProfile(name: String): Membership {
+            receivedName = name
+            return fetch(null)
         }
     }
 
@@ -89,5 +94,55 @@ class MembershipControllerTest {
         scope.cancel()
         source.gate!!.complete(Unit)
         assertNull(controller.state.value.membership)
+    }
+
+    @Test fun profileRequiresFreshActiveMembershipAndValidName() {
+        val source = Source()
+        val scope = CoroutineScope(Job() + Dispatchers.Unconfined)
+        try {
+            val controller = MembershipController(source, scope)
+            controller.onAction(MembershipAction.PrepareProfile("JOKER"))
+            assertEquals(MembershipError.NOT_ACTIVE, controller.state.value.error)
+            assertEquals(0, source.calls)
+            source.result = Membership("active", 1)
+            controller.onAction(MembershipAction.Refresh)
+            for (name in listOf("", " ", "x".repeat(101))) {
+                controller.onAction(MembershipAction.PrepareProfile(name))
+                assertEquals(MembershipError.PROFILE_UNAVAILABLE, controller.state.value.error)
+            }
+            assertEquals(1, source.calls)
+            controller.onAction(MembershipAction.PrepareProfile("JOKER subscription"))
+            assertTrue(controller.state.value.profileSaved)
+            assertEquals("JOKER subscription", source.receivedName)
+            controller.onAction(MembershipAction.Refresh)
+            assertFalse(controller.state.value.profileSaved)
+        } finally { scope.cancel() }
+    }
+
+    @Test fun profileFetchHandlesExpiryFailureAndDuplicateActions() {
+        val source = Source().apply { result = Membership("active", 1) }
+        val scope = CoroutineScope(Job() + Dispatchers.Unconfined)
+        try {
+            val controller = MembershipController(source, scope)
+            for (error in listOf(MembershipError.NOT_ACTIVE, MembershipError.PROFILE_UNAVAILABLE, MembershipError.STORAGE, MembershipError.NETWORK)) {
+                source.failure = null
+                controller.onAction(MembershipAction.Refresh)
+                source.failure = error
+                controller.onAction(MembershipAction.PrepareProfile("JOKER"))
+                assertEquals(error, controller.state.value.error)
+                assertFalse(controller.state.value.profileSaved)
+            }
+            source.failure = null
+            controller.onAction(MembershipAction.Refresh)
+            source.gate = CompletableDeferred()
+            controller.onAction(MembershipAction.PrepareProfile("JOKER"))
+            val count = source.calls
+            controller.onAction(MembershipAction.PrepareProfile("JOKER"))
+            assertEquals(count, source.calls)
+            assertTrue(controller.state.value.loading)
+            scope.cancel()
+            source.gate!!.complete(Unit)
+            assertFalse(controller.state.value.profileSaved)
+        } finally { scope.cancel() }
     }
 }

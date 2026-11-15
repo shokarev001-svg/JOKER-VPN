@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">تفعيل</string>
     <string name="joker_membership_refresh">تحديث الحالة</string>
     <string name="joker_membership_hint">يحدد الخادم الأيام المتبقية وقت التحقق. يُستخدم المفتاح مرة واحدة؛ تكرار الطلب لا يمدد المدة مجددًا. احتفظ ببيانات التطبيق للحفاظ على الوصول.</string>
+    <string name="joker_membership_profile_name">JOKER — الاشتراك</string>
+    <string name="joker_membership_profile_add">إضافة ملف VPN</string>
+    <string name="joker_membership_profile_saved">تم حفظ الملف «%1$s». اختره من قائمة الملفات، ثم أعد الاتصال بشبكة VPN.</string>
+    <string name="joker_membership_profile_unavailable">ملف VPN غير جاهز بعد. حاول لاحقًا.</string>
+    <string name="joker_membership_profile_inactive">يلزم اشتراك نشط لإضافة ملف VPN.</string>
+    <string name="joker_membership_profile_storage">تعذر حفظ الملف. أفرغ بعض مساحة التخزين وحاول مجددًا.</string>
 </resources>

@@ -19,11 +19,13 @@ data class MembershipUiState(
     val loading: Boolean = false,
     val membership: Membership? = null,
     val error: MembershipError? = null,
+    val profileSaved: Boolean = false,
 )
 
 sealed interface MembershipAction {
     data object Refresh : MembershipAction
     data class Redeem(val key: String) : MembershipAction
+    data class PrepareProfile(val name: String) : MembershipAction
 }
 
 /** Independently testable owner of loading, validation and server results. */
@@ -37,6 +39,14 @@ class MembershipController(private val source: MembershipSource, private val sco
             mutableState.value = MembershipUiState(false, error = MembershipError.UNAVAILABLE)
             return
         }
+        if (action is MembershipAction.PrepareProfile && state.value.membership?.status != "active") {
+            mutableState.value = state.value.copy(error = MembershipError.NOT_ACTIVE, profileSaved = false)
+            return
+        }
+        if (action is MembershipAction.PrepareProfile && (action.name.isBlank() || action.name.length > 100)) {
+            mutableState.value = state.value.copy(error = MembershipError.PROFILE_UNAVAILABLE, profileSaved = false)
+            return
+        }
         val key = (action as? MembershipAction.Redeem)?.key?.trim()?.uppercase(Locale.ROOT)
         if (key != null && !Regex("JOKER-[A-F0-9]{48}").matches(key)) {
             mutableState.value = state.value.copy(error = MembershipError.INVALID_KEY)
@@ -46,7 +56,9 @@ class MembershipController(private val source: MembershipSource, private val sco
         mutableState.value = MembershipUiState(true, loading = true)
         scope.launch {
             try {
-                mutableState.value = MembershipUiState(true, membership = source.fetch(key))
+                val membership = if (action is MembershipAction.PrepareProfile) source.prepareProfile(action.name) else source.fetch(key)
+                mutableState.value = MembershipUiState(true, membership = membership,
+                    profileSaved = action is MembershipAction.PrepareProfile)
             } catch (error: CancellationException) {
                 throw error
             } catch (error: MembershipException) {

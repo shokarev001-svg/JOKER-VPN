@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">সক্রিয় করুন</string>
     <string name="joker_membership_refresh">অবস্থা হালনাগাদ করুন</string>
     <string name="joker_membership_hint">পরীক্ষার সময় সার্ভার বাকি দিন নির্ধারণ করে। কী একবার ব্যবহারযোগ্য; পুনরায় অনুরোধে মেয়াদ আবার বাড়ে না। প্রবেশাধিকার রাখতে অ্যাপের তথ্য সংরক্ষণ করুন।</string>
+    <string name="joker_membership_profile_name">JOKER — সাবস্ক্রিপশন</string>
+    <string name="joker_membership_profile_add">VPN প্রোফাইল যোগ করুন</string>
+    <string name="joker_membership_profile_saved">“%1$s” প্রোফাইল সংরক্ষিত হয়েছে। প্রোফাইল তালিকা থেকে এটি বেছে নিয়ে VPN পুনরায় সংযোগ করুন।</string>
+    <string name="joker_membership_profile_unavailable">VPN প্রোফাইল এখনও প্রস্তুত নয়। পরে আবার চেষ্টা করুন।</string>
+    <string name="joker_membership_profile_inactive">প্রোফাইল যোগ করতে সক্রিয় সাবস্ক্রিপশন প্রয়োজন।</string>
+    <string name="joker_membership_profile_storage">প্রোফাইল সংরক্ষণ করা যায়নি। কিছু স্টোরেজ খালি করে আবার চেষ্টা করুন।</string>
 </resources>

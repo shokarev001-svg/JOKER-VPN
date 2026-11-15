@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">فعال‌سازی</string>
     <string name="joker_membership_refresh">تازه‌سازی وضعیت</string>
     <string name="joker_membership_hint">سرور روزهای باقی‌مانده را هنگام بررسی تعیین می‌کند. کلید یک‌بار مصرف است؛ تکرار درخواست مدت را دوباره افزایش نمی‌دهد. برای حفظ دسترسی، داده‌های برنامه را نگه دارید.</string>
+    <string name="joker_membership_profile_name">JOKER — اشتراک</string>
+    <string name="joker_membership_profile_add">افزودن نمایه VPN</string>
+    <string name="joker_membership_profile_saved">نمایه «%1$s» ذخیره شد. آن را از فهرست نمایه‌ها انتخاب کنید و دوباره به VPN وصل شوید.</string>
+    <string name="joker_membership_profile_unavailable">نمایه VPN هنوز آماده نیست. بعداً دوباره تلاش کنید.</string>
+    <string name="joker_membership_profile_inactive">برای افزودن نمایه، اشتراک فعال لازم است.</string>
+    <string name="joker_membership_profile_storage">نمایه ذخیره نشد. مقداری فضای ذخیره‌سازی خالی کنید و دوباره تلاش کنید.</string>
 </resources>

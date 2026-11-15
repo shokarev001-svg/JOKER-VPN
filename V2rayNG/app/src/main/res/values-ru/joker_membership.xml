@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">Активировать</string>
     <string name="joker_membership_refresh">Обновить статус</string>
     <string name="joker_membership_hint">Оставшиеся дни определяет сервер на момент проверки. Ключ используется один раз; повторный запрос не продлевает срок повторно. Сохраняйте данные приложения, чтобы не потерять доступ.</string>
+    <string name="joker_membership_profile_name">JOKER — Подписка</string>
+    <string name="joker_membership_profile_add">Добавить профиль VPN</string>
+    <string name="joker_membership_profile_saved">Профиль «%1$s» сохранён. Выберите его в списке профилей и переподключите VPN.</string>
+    <string name="joker_membership_profile_unavailable">Профиль VPN пока недоступен. Повторите попытку позже.</string>
+    <string name="joker_membership_profile_inactive">Для добавления профиля нужна активная подписка.</string>
+    <string name="joker_membership_profile_storage">Не удалось сохранить профиль. Освободите память и повторите попытку.</string>
 </resources>

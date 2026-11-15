@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">Aktivləşdir</string>
     <string name="joker_membership_refresh">Statusu yenilə</string>
     <string name="joker_membership_hint">Qalan günləri yoxlama zamanı server müəyyən edir. Açar bir dəfə istifadə olunur; təkrar sorğu müddəti yenidən uzatmır. Girişi saxlamaq üçün tətbiq məlumatlarını qoruyun.</string>
+    <string name="joker_membership_profile_name">JOKER — Abunəlik</string>
+    <string name="joker_membership_profile_add">VPN profili əlavə et</string>
+    <string name="joker_membership_profile_saved">“%1$s” profili saxlanıldı. Profil siyahısından onu seçin və VPN-ə yenidən qoşulun.</string>
+    <string name="joker_membership_profile_unavailable">VPN profili hələ hazır deyil. Daha sonra yenidən cəhd edin.</string>
+    <string name="joker_membership_profile_inactive">Profil əlavə etmək üçün aktiv abunəlik lazımdır.</string>
+    <string name="joker_membership_profile_storage">Profil saxlanılmadı. Yaddaşda yer boşaldın və yenidən cəhd edin.</string>
 </resources>

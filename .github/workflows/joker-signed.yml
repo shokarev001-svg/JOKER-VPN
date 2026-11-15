@@ -81,7 +81,7 @@ jobs:
         run: |
           python3 -m unittest discover -s ../activation -v
           chmod +x gradlew
-          ./gradlew :app:testPlaystoreDebugUnitTest --tests '*MembershipControllerTest' --no-daemon
+          ./gradlew :app:testPlaystoreDebugUnitTest --tests '*Membership*Test' --no-daemon
           ./gradlew :app:testPlaystoreDebugUnitTest :app:compilePlaystoreDebugKotlin :app:assemblePlaystoreDebug :app:assemblePlaystoreRelease --no-daemon
       - name: Sign and verify permanent APK
         run: |

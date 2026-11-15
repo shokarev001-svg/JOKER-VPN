@@ -56,6 +56,37 @@ object MmkvManager {
         }
     }
 
+    /** An installation-local profile GUID, deliberately unrelated to the secret VLESS UUID. */
+    fun saveMembershipProfile(config: ProfileItem): String = withProfileIndexLock {
+        val guid = "f8748590b67a4f60a37f4281364f403a"
+        val oldPayload = profileFullStorage.decodeString(guid)
+        val previous = decodeServerConfig(guid)
+        val profile = config.copy(subscriptionId = previous?.subscriptionId.orEmpty())
+        val indexKey = serverListKey(profile.subscriptionId)
+        val oldIndex = mainStorage.decodeString(indexKey)
+        val index = decodeServerList(profile.subscriptionId).apply {
+            if (!contains(guid)) add(0, guid)
+        }
+        commitMembershipProfile(
+            savePayload = {
+                requireStorageWrite(profileFullStorage.encode(guid, JsonUtil.toJson(profile)), "Failed to save membership profile")
+            },
+            saveIndex = {
+                requireStorageWrite(persistServerList(index, profile.subscriptionId), "Failed to publish membership profile")
+            },
+            restorePayload = {
+                if (oldPayload == null) profileFullStorage.remove(guid)
+                else requireStorageWrite(profileFullStorage.encode(guid, oldPayload), "Failed to restore membership profile")
+            },
+            restoreIndex = {
+                if (oldIndex == null) mainStorage.remove(indexKey)
+                else requireStorageWrite(mainStorage.encode(indexKey, oldIndex), "Failed to restore membership index")
+            },
+        )
+        // Selection/connection remains an explicit main-screen action.
+        guid
+    }
+
     //region private
 
     private const val ID_MAIN = "MAIN"

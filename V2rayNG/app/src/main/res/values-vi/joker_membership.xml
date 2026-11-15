@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">Kích hoạt</string>
     <string name="joker_membership_refresh">Cập nhật trạng thái</string>
     <string name="joker_membership_hint">Máy chủ xác định số ngày còn lại tại thời điểm kiểm tra. Mã chỉ dùng một lần; yêu cầu lặp lại không gia hạn thêm. Giữ dữ liệu ứng dụng để duy trì quyền truy cập.</string>
+    <string name="joker_membership_profile_name">JOKER — Gói dịch vụ</string>
+    <string name="joker_membership_profile_add">Thêm cấu hình VPN</string>
+    <string name="joker_membership_profile_saved">Đã lưu cấu hình “%1$s”. Chọn cấu hình này trong danh sách rồi kết nối lại VPN.</string>
+    <string name="joker_membership_profile_unavailable">Cấu hình VPN chưa sẵn sàng. Vui lòng thử lại sau.</string>
+    <string name="joker_membership_profile_inactive">Cần có gói dịch vụ đang hoạt động để thêm cấu hình VPN.</string>
+    <string name="joker_membership_profile_storage">Không thể lưu cấu hình. Hãy giải phóng bộ nhớ rồi thử lại.</string>
 </resources>

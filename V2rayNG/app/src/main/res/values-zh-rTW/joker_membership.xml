@@ -15,4 +15,10 @@
     <string name="joker_membership_redeem">啟用</string>
     <string name="joker_membership_refresh">重新整理狀態</string>
     <string name="joker_membership_hint">剩餘天數由伺服器在檢查時決定。啟用碼只能使用一次；重複請求不會再次延長訂閱。請保留應用程式資料以維持存取權。</string>
+    <string name="joker_membership_profile_name">JOKER — 訂閱</string>
+    <string name="joker_membership_profile_add">新增 VPN 設定</string>
+    <string name="joker_membership_profile_saved">已儲存設定「%1$s」。請在設定清單中選取它，然後重新連線 VPN。</string>
+    <string name="joker_membership_profile_unavailable">VPN 設定尚未就緒，請稍後再試。</string>
+    <string name="joker_membership_profile_inactive">需要有效訂閱才能新增 VPN 設定。</string>
+    <string name="joker_membership_profile_storage">無法儲存設定。請釋放儲存空間後再試。</string>
 </resources>

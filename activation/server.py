@@ -1,6 +1,8 @@
 """Subscription ledger. Run behind a TLS proxy; administration is local CLI only."""
 import argparse
+import base64
 import hashlib
+import ipaddress
 import json
 import math
 import os
@@ -22,9 +24,46 @@ class Rejected(Exception):
     pass
 
 
+class ProfileUnavailable(Exception):
+    pass
+
+
+def validate_endpoint(value):
+    """Accept only client parameters; never publish arbitrary server configuration."""
+    fields = {'host', 'port', 'network', 'security', 'sni', 'public_key', 'short_id', 'flow'}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError('Invalid public endpoint fields')
+    if not isinstance(value['host'], str):
+        raise ValueError('Expected a public server IPv4')
+    address = ipaddress.ip_address(value['host'])
+    if address.version != 4 or not address.is_global:
+        raise ValueError('Expected a public server IP')
+    if type(value['port']) is not int or not 1 <= value['port'] <= 65535:
+        raise ValueError('Invalid port')
+    if value['network'] != 'tcp' or value['security'] != 'reality' or value['flow'] not in ('', 'xtls-rprx-vision'):
+        raise ValueError('Unsupported transport')
+    sni = value['sni']
+    if not isinstance(sni, str) or len(sni) > 253 or not all(
+        re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?', label)
+        for label in sni.split('.')
+    ):
+        raise ValueError('Invalid SNI')
+    key = value['public_key']
+    if not isinstance(key, str) or not re.fullmatch(r'[A-Za-z0-9_-]{43}', key):
+        raise ValueError('Invalid public key')
+    raw = base64.urlsafe_b64decode(key + '=')
+    if len(raw) != 32 or base64.urlsafe_b64encode(raw).decode().rstrip('=') != key:
+        raise ValueError('Invalid public key encoding')
+    short_id = value['short_id']
+    if not isinstance(short_id, str) or not re.fullmatch(r'(?:[0-9a-f]{2}){0,8}', short_id):
+        raise ValueError('Invalid short ID')
+    return dict(value)
+
+
 class Ledger:
-    def __init__(self, path, clock=time.time):
+    def __init__(self, path, clock=time.time, endpoint=None):
         self.path, self.clock = str(path), clock
+        self.endpoint = validate_endpoint(endpoint) if endpoint is not None else None
         with self.connect() as db:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS members (
@@ -63,7 +102,7 @@ class Ledger:
                        (self.digest(key), days, int(self.clock()) + valid_days * DAY))
         return key
 
-    def status(self, token, key=None):
+    def status(self, token, key=None, include_profile=False):
         if not isinstance(token, str) or not TOKEN.fullmatch(token):
             raise Rejected('invalid_token')
         if key is not None and (not isinstance(key, str) or not KEY.fullmatch(key)):
@@ -94,9 +133,25 @@ class Ledger:
                     db.execute('INSERT OR IGNORE INTO vpn_credentials VALUES (?, ?)',
                                (owner, str(uuid.uuid4())))
                 # Retrying after a lost response never grants the days twice.
-            return {'server_time': now, 'expires_at': expires,
-                    'remaining_days': math.ceil(max(0, expires - now) / DAY),
-                    'status': 'active' if expires > now else ('expired' if expires else 'inactive')}
+            result = {'server_time': now, 'expires_at': expires,
+                      'remaining_days': math.ceil(max(0, expires - now) / DAY),
+                      'status': 'active' if expires > now else ('expired' if expires else 'inactive')}
+            if include_profile:
+                result['vpn'] = None
+                if expires > now:
+                    if self.endpoint is None:
+                        raise ProfileUnavailable()
+                    credential = db.execute('SELECT uuid FROM vpn_credentials WHERE token_hash=?', (owner,)).fetchone()
+                    if not credential:
+                        raise ProfileUnavailable()
+                    try:
+                        identity = uuid.UUID(credential[0])
+                    except (ValueError, TypeError, AttributeError):
+                        raise ProfileUnavailable() from None
+                    if identity.version != 4 or str(identity) != credential[0]:
+                        raise ProfileUnavailable()
+                    result['vpn'] = dict(self.endpoint, schema=1, id=str(identity))
+            return result
 
 
 def handler(ledger):
@@ -131,13 +186,18 @@ def handler(ledger):
                 if not isinstance(payload, dict):
                     raise ValueError()
                 key = payload.get('key', '') if self.path == '/v1/redeem' else None
-                return self.reply(200, ledger.status(auth[7:], key))
+                include_profile = payload.get('include_profile', False)
+                if type(include_profile) is not bool or (include_profile and self.path != '/v1/status'):
+                    raise ValueError()
+                return self.reply(200, ledger.status(auth[7:], key, include_profile))
             except Rejected as error:
                 return self.reply(400, {'error': str(error)})
             except (ValueError, UnicodeError):
                 return self.reply(400, {'error': 'invalid_request'})
             except sqlite3.Error:
                 return self.reply(503, {'error': 'temporarily_unavailable'})
+            except ProfileUnavailable:
+                return self.reply(503, {'error': 'profile_unavailable'})
     return Handler
 
 
@@ -151,9 +211,13 @@ def main():
     issue.add_argument('--valid-days', type=int, default=90)
     serve = sub.add_parser('serve')
     serve.add_argument('--port', type=int, default=8088)
+    serve.add_argument('--endpoint', default='/etc/joker-activation/vpn-endpoint.json')
     args = parser.parse_args()
     Path(args.database).parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    ledger = Ledger(args.database)
+    endpoint = None
+    if args.command == 'serve' and Path(args.endpoint).exists():
+        endpoint = json.loads(Path(args.endpoint).read_text())
+    ledger = Ledger(args.database, endpoint=endpoint)
     if args.command == 'issue':
         print(ledger.issue(args.days, args.valid_days))
     else:

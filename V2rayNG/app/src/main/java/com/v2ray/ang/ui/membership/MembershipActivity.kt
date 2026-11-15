@@ -42,6 +42,7 @@ class MembershipActivity : BaseComponentActivity() {
 private fun MembershipScreen(state: MembershipUiState, onAction: (MembershipAction) -> Unit, onBack: () -> Unit) {
     // A voucher is transient secret input, deliberately not written to saved-instance state.
     var key by remember { mutableStateOf("") }
+    val profileName = stringResource(R.string.joker_membership_profile_name)
     Scaffold { padding ->
         Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
             .imePadding().verticalScroll(rememberScrollState()).padding(24.dp),
@@ -60,8 +61,13 @@ private fun MembershipScreen(state: MembershipUiState, onAction: (MembershipActi
                 }), style = MaterialTheme.typography.titleLarge)
                 if (membership.status == "active") {
                     Text(stringResource(R.string.joker_membership_days, membership.remainingDays))
+                    OutlinedButton(onClick = { onAction(MembershipAction.PrepareProfile(profileName)) },
+                        enabled = !state.loading, modifier = Modifier.fillMaxWidth()) {
+                        Text(stringResource(R.string.joker_membership_profile_add))
+                    }
                 }
             }
+            if (state.profileSaved) Text(stringResource(R.string.joker_membership_profile_saved, profileName))
             state.error?.let { error ->
                 Text(stringResource(when (error) {
                     MembershipError.UNAVAILABLE -> R.string.joker_membership_unavailable
@@ -69,6 +75,9 @@ private fun MembershipScreen(state: MembershipUiState, onAction: (MembershipActi
                     MembershipError.USED_KEY -> R.string.joker_membership_used
                     MembershipError.EXPIRED_KEY -> R.string.joker_membership_key_expired
                     MembershipError.NETWORK -> R.string.joker_membership_network
+                    MembershipError.PROFILE_UNAVAILABLE -> R.string.joker_membership_profile_unavailable
+                    MembershipError.NOT_ACTIVE -> R.string.joker_membership_profile_inactive
+                    MembershipError.STORAGE -> R.string.joker_membership_profile_storage
                 }), color = MaterialTheme.colorScheme.error)
             }
             OutlinedTextField(value = key, onValueChange = { if (it.length <= 128) key = it },
