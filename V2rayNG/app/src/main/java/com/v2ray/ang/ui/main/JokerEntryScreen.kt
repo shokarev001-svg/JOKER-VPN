@@ -136,6 +136,11 @@ fun JokerEntryScreen(
                 }
             }
             JokerPortrait(running = running, accent = accent)
+            OutlinedButton(onClick = { onAction(MainAction.OpenMembership) },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = JokerGold)) {
+                Text(stringResource(R.string.joker_membership_title))
+            }
             Button(
                 onClick = { onAction(MainAction.ToggleService) },
                 enabled = hasProfile || running,

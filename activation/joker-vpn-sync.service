@@ -1,0 +1,13 @@
+[Unit]
+Description=JOKER subscription account synchronization (integration stage)
+After=docker.service joker-activation.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/joker-activation/vpn_sync.py --apply --acknowledge-session-cutoff-pending
+TimeoutStartSec=90
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
